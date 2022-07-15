@@ -1,0 +1,14 @@
+# Ignore the temp file
+temp 
+
+# Ignore all the content in the temp directory
+*/temp*
+
+# Ignore any files & directories starting with temp (in sub dir)
+*/*/temp*
+
+# Wild card match for one character
+temp?
+
+#Ignore the Dockerfile
+Dockerfile 

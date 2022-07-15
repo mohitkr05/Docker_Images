@@ -1,7 +1,7 @@
-# Example 10 - 
+# Example 12 - Using health check 
 
 # ARGUMENTS can be changed during the buildtime 
-ARG  BASE_IMAGE_VERSION=latest
+ARG  BASE_IMAGE_VERSION=20.04
 
 FROM ubuntu:${BASE_IMAGE_VERSION}
 
@@ -9,16 +9,22 @@ FROM ubuntu:${BASE_IMAGE_VERSION}
 ENV APPLICATION nginx
 
 ## you can use any commands that are available in base image
-RUN apt-get -y update  && apt-get -y install nginx
+RUN apt-get -y update  && apt-get -y install nginx unzip curl
 
-# ADD is similar to copy
-ADD ../index.html /var/www/html/index.nginx-debian.html
+
+WORKDIR /var/www/html
 
 # However it can get files from Remote URL which COPY cannot
-
-ADD 
-
 # It can also extract TAR/ZIP files 
+# You can also add chown instructions with add 
+ADD https://wordpress.org/latest.zip .
+
+# where this file will be extracted?
+RUN unzip -o latest.zip 
+
+
+# Update the health check URL to return the value
+HEALTHCHECK --interval=60s --timeout=3s CMD curl --fail http://localhost || exit 1
 
 # EXPOSE TO The port numbers can be TCP/UDP
 # EXPOSE 123/UDP (EXAMPLE FOR NTP Application)
